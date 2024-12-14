@@ -9,10 +9,10 @@ app = FastAPI(
 )
 
 
-with open(r"C:\Users\HP\Documents\phishing mail\RF.pkl", "rb") as f:
+with open(r"C:/Users/HP/Documents/Email Phishing/RF.pkl", "rb") as f:
     model = pickle.load(f)
 
-with open(r"C:\Users\HP\Documents\phishing mail\vect.pkl", "rb") as e:
+with open(r"C:/Users/HP/Documents/Email Phishing/vect.pkl", "rb") as e:
     vectorizer = pickle.load(e)
 
 @app.get('/')
