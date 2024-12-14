@@ -39,7 +39,7 @@ def main():
 
     
     #getting the input data  from the user
-    text= st.text_input("Enter Mail")
+    text= st.text_input("Enter Mail Message")
     
     #code for prediction
     diagnosis=''
