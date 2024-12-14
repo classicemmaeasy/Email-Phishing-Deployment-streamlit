@@ -1,82 +1,58 @@
-import pandas as pd
+import streamlit as st
+import pickle 
+import numpy as np
 from fastapi import FastAPI
-import pickle
-from data_model import Phish  # Pydantic model
-
-app = FastAPI(
-    title="Phishing mail prediction",
-    description="Predicting phishing emails"
-)
+from sklearn.feature_extraction.text import CountVectorizer
 
 
-with open(r"C:/Users/HP/Documents/Email Phishing/RF.pkl", "rb") as f:
-    model = pickle.load(f)
 
-with open(r"C:/Users/HP/Documents/Email Phishing/vect.pkl", "rb") as e:
-    vectorizer = pickle.load(e)
+def mail(input_data):
 
-@app.get('/')
-def getit():
-    return {"message": "Welcome to the Phishing mail app"}
+    with open("vect.pkl", "rb") as f:
+        vectorizer = pickle.load(f)
 
-@app.post('/predict')
-def model_predict(phish: Phish):
-    # Extract the email text from the Pydantic object
-    email_text = [phish.Email_Text]  # List of strings for vectorizer.transform()
+    with open("RF.pkl", "rb") as f:
+        loaded_model = pickle.load(f)
 
-    # Transform the input text using the loaded vectorizer
-    transformed_text = vectorizer.transform(email_text)
+    tansdata=vectorizer.transform([input_data])
 
-    # Perform the prediction
-    pred = model.predict(transformed_text)
+    pred=loaded_model.predict(tansdata)
 
-    # Return a response based on the prediction
-    if pred[0] == 1:
-        return {"prediction": "legitimate mail"}
+    print(pred)
+    
+
+    if (pred[0] == 1):
+        return "legitimate mail"
     else:
-        return {"prediction": "phishing mail"}
+        return "phishing mail"
+    
+def main():
+
+    import streamlit as st
+
+
+    st.markdown('<p style="font-size:24px; font-weight:bold;">Welcome to the Phishing Mail Prediction App</p>', unsafe_allow_html=True)
+
+
+    st.write("This app predicts whether a mail is a phishing and vice versa")
+
+
+    
+    #getting the input data  from the user
+    text= st.text_input("Enter Mail")
+    
+    #code for prediction
+    diagnosis=''
+    
+    #creating a button for prediction
+    if st.button('Mail Prediction'):
+        diagnosis= mail(text)
+    
+    st.success(diagnosis)
+    
+if __name__=='__main__':
+    main()
 
 
 
 
-
-
-
-# import pandas as pd 
-# from fastapi import FastAPI
-# import pickle
-# from sklearn.feature_extraction.text import TfidfVectorizer
-# from data_model import Phish
-
-# app=FastAPI(
-#     title="Phishing mail prediction",
-#     description="Predicting water Portability"
-#     )
-
-# with open(r"C:\Users\HP\Documents\phishing mail\RF.pkl","rb") as f:
-#     model=pickle.load(f)
-
-# with open(r"C:\Users\HP\Documents\phishing mail\vect.pkl","rb") as e:
-#     vectorizer=pickle.load(e)
-
-# @app.get('/')
-
-# def getit():
-#     return "welcome to the Phishing mail app"
-
-
-# @app.post('/predict')
-
-# def model_predict(phish:Phish):
-#     sample=pd.DataFrame({
-#         'Email_Text': [phish.Email_Text],
-#     })
-
-#     tansdata=vectorizer.transform([sample])
-
-#     pred=model.predict(tansdata)
-
-#     if pred == 1:
-#       return "legitimate mail"
-#     else:
-#        return "phishing mail"

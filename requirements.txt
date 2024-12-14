@@ -9,6 +9,7 @@
 
 numpy
 pandas
+fastapi
 matplotlib
 seaborn
 scikit-learn
