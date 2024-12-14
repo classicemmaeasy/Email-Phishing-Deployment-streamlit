@@ -1,0 +1,15 @@
+# uvicorn
+# fastapi
+# pydantic
+# pandas
+# numpy
+# pickle
+# sklearn
+
+
+numpy
+pandas
+matplotlib
+seaborn
+scikit-learn
+streamlit
